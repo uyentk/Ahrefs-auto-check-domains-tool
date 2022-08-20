@@ -24,5 +24,3 @@ def login_ahrefs():
     txtPass.send_keys(password)
     driver.find_element(By.XPATH,"//button[@type='submit']").click()
 
-login_ahrefs()
-
