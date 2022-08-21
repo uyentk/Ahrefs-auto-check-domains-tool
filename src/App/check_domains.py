@@ -3,6 +3,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import pyperclip
 import pandas as pd
 
@@ -19,7 +21,9 @@ driver.get(url)
 df = pd.read_csv("src/assets/input.csv", header = None)
 df.columns = ["Domains"]
 
-def login_ahrefs():
+
+def check_domain():
+    # Login
     try:  
         txtUser = driver.find_element(By.NAME, 'email')
         txtUser.clear()
@@ -31,22 +35,24 @@ def login_ahrefs():
     txtPass.send_keys(password)
     driver.find_element(By.XPATH,"//button[@type='submit']").click()
 
-def get_domains():
+    # Get input domain and paste into the textbox
+    WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//textarea[@placeholder='Enter up to 200 URLs (one URL per line)']")))
     for i in df["Domains"]:
         # Copy domain name
         pyperclip.copy(i)
         clipboard_text= pyperclip.paste()
-
         # Paste domain name in batch analysis form
         txtDomain = driver.find_element(By.XPATH, "//textarea[@placeholder='Enter up to 200 URLs (one URL per line)']")
         txtDomain.send_keys(clipboard_text)
         txtDomain.send_keys(Keys.ENTER)
-
-        # print(clipboard_text)
         # Empty the clipboard text
         clipboard_text = ""
+    driver.find_element(By.XPATH,"//button[@id = 'startAnalysisButton']").click()
+    # WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//span[contains(text(), 'Export')]")))
+    # driver.find_element(By.XPATH, "//span[contains(text(), 'Export')]").click()
+                    # df.drop(index=df.index[:200], axis=0, inplace=True)
+check_domain()
+        
+        
 
-
-login_ahrefs()
-get_domains()
 
