@@ -7,6 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pyperclip
 import pandas as pd
+import time
 
 PATH = "C:\Program Files (x86)\chromedriver.exe"
 url = "https://app.ahrefs.com/batch-analysis"
@@ -23,6 +24,7 @@ df.columns = ["Domains"]
 
 
 def check_domain():
+    domains = []
     # Login
     try:  
         txtUser = driver.find_element(By.NAME, 'email')
@@ -37,20 +39,36 @@ def check_domain():
 
     # Get input domain and paste into the textbox
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//textarea[@placeholder='Enter up to 200 URLs (one URL per line)']")))
-    for i in df["Domains"]:
-        # Copy domain name
-        pyperclip.copy(i)
-        clipboard_text= pyperclip.paste()
-        # Paste domain name in batch analysis form
-        txtDomain = driver.find_element(By.XPATH, "//textarea[@placeholder='Enter up to 200 URLs (one URL per line)']")
-        txtDomain.send_keys(clipboard_text)
-        txtDomain.send_keys(Keys.ENTER)
-        # Empty the clipboard text
-        clipboard_text = ""
-    driver.find_element(By.XPATH,"//button[@id = 'startAnalysisButton']").click()
-    # WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//span[contains(text(), 'Export')]")))
-    # driver.find_element(By.XPATH, "//span[contains(text(), 'Export')]").click()
-                    # df.drop(index=df.index[:200], axis=0, inplace=True)
+    txtDomain = driver.find_element(By.XPATH, "//textarea[@placeholder='Enter up to 200 URLs (one URL per line)']")
+    
+    while len(df) != 0:
+        for i in range(0, (len(df) // 200) + 1):
+            for j in df["Domains"]:
+            # Copy domain name
+                pyperclip.copy(j)
+                clipboard_text= pyperclip.paste()
+                domains.append(clipboard_text)
+                print(len(domains))
+                if len(domains) < 201:
+                # Paste domain name in batch analysis form
+                    txtDomain.send_keys(clipboard_text)
+                    txtDomain.send_keys(Keys.ENTER)
+                    # Empty the clipboard text
+                    clipboard_text = ""
+                else:
+                    break
+            driver.find_element(By.XPATH,"//button[@id = 'startAnalysisButton']").click()
+            time.sleep(20)
+            # Export data
+            driver.find_element(By.XPATH, "//a[@id = 'baExportButton']").click()
+            time.sleep(10)
+            driver.find_element(By.XPATH, "//button[@id = 'start_export_w_selected_charset']").click()
+            time.sleep(10)
+            txtDomain = driver.find_element(By.XPATH, "//textarea[@placeholder='Enter up to 200 URLs (one URL per line)']")
+            txtDomain.clear()
+            df.drop(index=df.index[:200], axis=0, inplace=True)
+            domains = []
+
 check_domain()
         
         
