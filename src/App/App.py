@@ -40,7 +40,7 @@ def check_domain():
     # Get input domain and paste into the textbox
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, "//textarea[@placeholder='Enter up to 200 URLs (one URL per line)']")))
     txtDomain = driver.find_element(By.XPATH, "//textarea[@placeholder='Enter up to 200 URLs (one URL per line)']")
-    
+
     while len(df) != 0:
         for i in range(0, (len(df) // 200) + 1):
             for j in df["Domains"]:
@@ -70,7 +70,3 @@ def check_domain():
             domains = []
 
 check_domain()
-        
-        
-
-
