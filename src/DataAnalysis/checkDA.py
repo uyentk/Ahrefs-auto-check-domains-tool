@@ -15,7 +15,7 @@ myFile.close()
 myFile = open('src/assets/input.csv','r')
 reader = csv.reader(myFile)
 
-outputFile = open('src/DataAnalysis/data/output.csv', 'w')
+outputFile = open('src/DataAnalysis/data/output_test.csv', 'w')
 outputWriter = csv.writer(outputFile)
 
 outputWriter.writerow(["URL","DA"])
@@ -27,18 +27,18 @@ headers = {
     'Content-Type': 'application/json',
     'Cookie': '__cfduid=d5e605fe6b4077577761980e84856815f1600710127',
 }
-
+'''
 headers = {
     'Authorization': 'Basic bW96c2NhcGUtYjJmMmI3NGEwYzo1YTQwOGEzMDZkYWJhM2JhZmUxNThmNzhhMjcyMTllYw==',
     'Content-Type': 'application/json',
     'Cookie': '__cfduid=d57137e530cb8830a86dd3966c0e852891609019976',
 }
-'''
-headers = {
-    'Authorization': 'Basic bW96c2NhcGUtZDE0MTgyMmYyMDpmZGIzYWFiYTBlZTkyMThjNDUzNTk2MjlmNzlmMzZmNQ==',
-    'Content-Type': 'application/json',
-    'Cookie': '__cfduid=d57137e530cb8830a86dd3966c0e852891609019976',
-}
+
+# headers = {
+#     'Authorization': 'Basic bW96c2NhcGUtZDE0MTgyMmYyMDpmZGIzYWFiYTBlZTkyMThjNDUzNTk2MjlmNzlmMzZmNQ==',
+#     'Content-Type': 'application/json',
+#     'Cookie': '__cfduid=d57137e530cb8830a86dd3966c0e852891609019976',
+# }
 
 pages = []
 which_row = 0
