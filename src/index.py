@@ -6,3 +6,5 @@ import pandas
 def auto_process():
     check_domain()
     df.to_csv("src/DataAnalysis/data/result.csv")
+
+auto_process()
