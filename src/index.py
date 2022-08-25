@@ -1,10 +1,12 @@
 from tabnanny import check
 from App.Automation import check_domain
-from DataAnalysis.data_analyse import df
+from DataAnalysis.data_analyse import data_process
+from DataAnalysis.checkDA import check_DA
 import pandas 
 
 def auto_process():
     check_domain()
-    df.to_csv("src/DataAnalysis/data/result.csv")
+    check_DA()
+    data_process()
 
 auto_process()

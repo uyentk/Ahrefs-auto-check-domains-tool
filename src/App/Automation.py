@@ -15,13 +15,14 @@ email = "hoibeokkk@rattlenhumbarnyc.com"
 password = "teamasm10k"
 
 options = webdriver.ChromeOptions()
+prefs = {"download.default_directory": "D:\Domain Checking\Ahrefs-auto-check-domains-tool\src\DataAnalysis\data"}
+options.add_experimental_option('prefs', prefs)
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
 driver = webdriver.Chrome(PATH, options= options, service = Service(ChromeDriverManager().install()))
 driver.get(url)
 
 df = pd.read_csv("src/assets/input.csv", header = None)
 df.columns = ["Domains"]
-
 
 def check_domain():
     domains = []
@@ -68,5 +69,3 @@ def check_domain():
             txtDomain.clear()
             df.drop(index=df.index[:200], axis=0, inplace=True)
             domains = []
-
-check_domain()
